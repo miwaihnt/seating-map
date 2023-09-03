@@ -1,27 +1,48 @@
+import { LatLngBounds,CRS,LatLng } from 'leaflet';
 import './App.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, ImageOverlay,Marker,Popup } from 'react-leaflet';
 
 const App = () => {
   
-  const position = [51.505, -0.09]
-  const MapContainerStyle = {
-    width: "800px",
-    height: "600px"
+  const handleClic = (e) => {
+  const lat = e.LatLng.lat
+  const lng = e.LatLng.lng
+  console.log('緯度${lat},経度${lng}')
+  }
+
+  const browerinnnerHight = window.innerHeight;
+  const browerinnnerWidth = window.innerWidth
+  
+  const mapconteinerStyle = {
+    width : browerinnnerWidth,
+    height : browerinnnerHight
   };
+
+  
+  const centerHight = browerinnnerHight / 2 ;
+  const centerWidth = browerinnnerWidth / 2 ;
+  const center = new LatLng(centerHight,centerWidth);
+  const position = [200,200]
 
   return (
     <>
-        <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={MapContainerStyle}>
-
-          <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker position={[51.505, -0.09]}>
-            <Popup>
-              A pretty CSS3 popup. <br/> Easily customizable.
-            </Popup>
-          </Marker>
+      <MapContainer 
+        crs={CRS.Simple}
+        center={center}
+        zoom={0}
+        style={mapconteinerStyle}>
+        <div className = "imgstyle">
+          <ImageOverlay  
+          url={"/seatsample.png"} 
+          bounds={new LatLngBounds([[0,0], [browerinnnerHight, browerinnnerWidth]])}
+          />             
+        </div>
+        <Marker position={position}>
+          <Popup>
+              Hello!
+          </Popup>
+        </Marker>
+         
         </MapContainer>  
     </>
     );
